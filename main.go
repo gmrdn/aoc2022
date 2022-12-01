@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -19,6 +20,8 @@ func (e *Elf) AddCarriage(qty int) {
 	e.Carrying += qty
 }
 
+type Elves []Elf
+
 func main() {
 	readFile, err := os.Open("input.txt")
 	if err != nil {
@@ -28,16 +31,15 @@ func main() {
 
 	fileScanner.Split(bufio.ScanLines)
 
-	maxCalories := 0
+	var all Elves
 
 	currentElf := NewElf()
 	for fileScanner.Scan() {
 		currentLine := fileScanner.Text()
 
 		if currentLine == "" {
-			if currentElf.Carrying > maxCalories {
-				maxCalories = currentElf.Carrying
-			}
+			all = append(all, *currentElf)
+
 			currentElf = NewElf()
 			continue
 		}
@@ -51,5 +53,10 @@ func main() {
 
 	readFile.Close()
 
-	fmt.Println(maxCalories)
+	sort.Slice(all, func(i, j int) bool {
+		return all[i].Carrying > all[j].Carrying
+	})
+	fmt.Println("All", all)
+
+	fmt.Println(all[0].Carrying + all[1].Carrying + all[2].Carrying)
 }
