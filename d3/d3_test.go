@@ -6,8 +6,7 @@ import (
 )
 
 func TestD2(t *testing.T) {
-	input := `
-vJrwpWtwJgWrhcsFMMfFFhFp
+	input := `vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
 PmmdzqPrVvPwwTWBwg
 wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
@@ -18,7 +17,7 @@ CrZsJsPPZsGzwwsLwLmpwMDw
 	d3 := NewD3()
 	d3.Input(bytes.NewBufferString(input))
 	got := d3.Run()
-	want := 157
+	want := 70
 	if got != want {
 		t.Errorf("got %v want %v", got, want)
 	}
