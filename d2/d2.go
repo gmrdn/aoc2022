@@ -2,7 +2,6 @@ package d2
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 )
 
@@ -72,8 +71,6 @@ func (d2 *D2) Run() int {
 		}
 
 		score += Score[myPlay]
-		fmt.Println(string(myPlay))
-
 	}
 
 	return score
