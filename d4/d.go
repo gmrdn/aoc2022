@@ -36,15 +36,16 @@ func (d *D) Run() int {
 		left2, _ := strconv.Atoi(rightSide[0])
 		right2, _ := strconv.Atoi(rightSide[1])
 
-		// ..l1........r1..
-		// .....l2....r2...
-		if left1 <= left2 && right1 >= right2 {
+		// .....l1.........r1........
+		// .........l2..........r2...
+		if left2 >= left1 && left2 <= right1 {
 			nbOverlapping++
 			continue
 		}
-		// ...l1...r1....
-		// ..l2......r2..
-		if left1 >= left2 && right1 <= right2 {
+
+		// .....l1.........r1........
+		// ..l2........r2............
+		if left1 >= left2 && left1 <= right2 {
 			nbOverlapping++
 			continue
 		}
