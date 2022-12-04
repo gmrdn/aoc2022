@@ -1,20 +1,20 @@
-package d2
+package d
 
 import (
 	"bufio"
 	"io"
 )
 
-type D2 struct {
+type D struct {
 	inputStream io.Reader
 }
 
-func NewD2() *D2 {
-	return &D2{}
+func NewD() *D {
+	return &D{}
 }
 
-func (d2 *D2) Input(input io.Reader) {
-	d2.inputStream = bufio.NewReader(input)
+func (d *D) Input(input io.Reader) {
+	d.inputStream = bufio.NewReader(input)
 }
 
 var Score = map[byte]int{
@@ -41,8 +41,8 @@ var Draw = map[byte]byte{
 	'C': 'C',
 }
 
-func (d2 *D2) Run() int {
-	fileScanner := bufio.NewScanner(d2.inputStream)
+func (d *D) Run() int {
+	fileScanner := bufio.NewScanner(d.inputStream)
 
 	fileScanner.Split(bufio.ScanLines)
 

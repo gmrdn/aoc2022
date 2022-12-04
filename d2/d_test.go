@@ -1,4 +1,4 @@
-package d2
+package d
 
 import (
 	"bytes"
@@ -11,9 +11,9 @@ B X
 C Z
 `
 
-	d2 := NewD2()
-	d2.Input(bytes.NewBufferString(input))
-	got := d2.Run()
+	d := NewD()
+	d.Input(bytes.NewBufferString(input))
+	got := d.Run()
 	want := 12
 	if got != want {
 		t.Errorf("got %v want %v", got, want)

@@ -1,24 +1,24 @@
-package d3
+package d
 
 import (
 	"bufio"
 	"io"
 )
 
-type D3 struct {
+type D struct {
 	inputStream io.Reader
 }
 
-func NewD3() *D3 {
-	return &D3{}
+func NewD() *D {
+	return &D{}
 }
 
-func (d3 *D3) Input(input io.Reader) {
-	d3.inputStream = bufio.NewReader(input)
+func (d *D) Input(input io.Reader) {
+	d.inputStream = bufio.NewReader(input)
 }
 
-func (d3 *D3) Run() int {
-	fileScanner := bufio.NewScanner(d3.inputStream)
+func (d *D) Run() int {
+	fileScanner := bufio.NewScanner(d.inputStream)
 
 	fileScanner.Split(bufio.ScanLines)
 

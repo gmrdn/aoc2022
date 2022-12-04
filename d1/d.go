@@ -1,4 +1,4 @@
-package d1
+package d
 
 import (
 	"bufio"
@@ -8,16 +8,16 @@ import (
 	"strconv"
 )
 
-type D1 struct {
+type D struct {
 	inputStream io.Reader
 }
 
-func NewD1() *D1 {
-	return &D1{}
+func NewD() *D {
+	return &D{}
 }
 
-func (d1 *D1) Input(input io.Reader) {
-	d1.inputStream = bufio.NewReader(input)
+func (d *D) Input(input io.Reader) {
+	d.inputStream = bufio.NewReader(input)
 }
 
 type Elf struct {
@@ -34,8 +34,8 @@ func (e *Elf) AddCarriage(qty int) {
 
 type Elves []Elf
 
-func (d1 *D1) Run() int {
-	fileScanner := bufio.NewScanner(d1.inputStream)
+func (d *D) Run() int {
+	fileScanner := bufio.NewScanner(d.inputStream)
 
 	fileScanner.Split(bufio.ScanLines)
 	var all Elves

@@ -5,17 +5,17 @@ import (
 	"fmt"
 	"os"
 
-	"aoc2022/d1"
-	"aoc2022/d2"
-	"aoc2022/d3"
+	d1 "aoc2022/d1"
+	d2 "aoc2022/d2"
+	d3 "aoc2022/d3"
 	"aoc2022/days"
 )
 
 func main() {
 	days := []days.Day{
-		d1.NewD1(),
-		d2.NewD2(),
-		d3.NewD3(),
+		d1.NewD(),
+		d2.NewD(),
+		d3.NewD(),
 	}
 
 	for index, day := range days {
