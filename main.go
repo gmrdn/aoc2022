@@ -26,6 +26,6 @@ func main() {
 			fmt.Println(err)
 		}
 		day.Input(bytes.NewBuffer(input))
-		fmt.Printf("Day %d: %d\n", index, day.Run())
+		fmt.Printf("Day %d: %d\n", index+1, day.Run())
 	}
 }
