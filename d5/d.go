@@ -60,16 +60,14 @@ func (d *D) RunStr() string {
 		}
 		nb, from, to := parseMove(line)
 
-		for i := 0; i < nb; i++ {
-			value := s[from][len(s[from])-1]
-			s[to] = append(s[to], value)
-			s[from] = s[from][:len(s[from])-1]
-		}
+		values := s[from][len(s[from])-nb:]
+		s[to] = append(s[to], values...)
+		s[from] = s[from][:len(s[from])-nb]
 	}
 
 	result := ""
-	for _, stack := range s {
-		result += stack[len(stack)-1]
+	for i := 1; i <= len(s); i++ {
+		result += s[i][len(s[i])-1]
 	}
 	return result
 }

@@ -20,7 +20,7 @@ move 1 from 1 to 2
 	d := NewD()
 	d.Input(bytes.NewBufferString(input))
 	got := d.RunStr()
-	want := "CMZ"
+	want := "MCD"
 	if got != want {
 		t.Errorf("got %v want %v", got, want)
 	}
