@@ -50,3 +50,7 @@ func (d *D) Run() int {
 
 	return nbOverlapping
 }
+
+func (d *D) RunStr() string {
+	return ""
+}

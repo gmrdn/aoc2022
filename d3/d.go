@@ -71,3 +71,7 @@ func (d *D) Run() int {
 
 	return sumOfPriorities
 }
+
+func (d *D) RunStr() string {
+	return ""
+}

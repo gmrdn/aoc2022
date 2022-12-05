@@ -75,3 +75,7 @@ func (d *D) Run() int {
 
 	return score
 }
+
+func (d *D) RunStr() string {
+	return ""
+}

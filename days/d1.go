@@ -7,4 +7,5 @@ import (
 type Day interface {
 	Input(input io.Reader)
 	Run() int
+	RunStr() string
 }

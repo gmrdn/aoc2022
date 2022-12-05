@@ -64,3 +64,7 @@ func (d *D) Run() int {
 
 	return all[0].Carrying + all[1].Carrying + all[2].Carrying
 }
+
+func (d *D) RunStr() string {
+	return ""
+}
