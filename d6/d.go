@@ -26,7 +26,7 @@ func (d *D) Run() int {
 
 	for i := 0; i < len(runes); i++ {
 		seq := make(map[byte]bool)
-		for j := i; j < i+4; j++ {
+		for j := i; j < i+14; j++ {
 			ok := seq[runes[j]]
 			if ok {
 				break
@@ -34,8 +34,8 @@ func (d *D) Run() int {
 			seq[runes[j]] = true
 		}
 
-		if len(seq) == 4 {
-			return i + 4
+		if len(seq) == 14 {
+			return i + 14
 		}
 
 	}
