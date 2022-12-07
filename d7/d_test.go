@@ -34,7 +34,7 @@ $ ls
 	d := NewD()
 	d.Input(bytes.NewBufferString(input))
 	got := d.Run()
-	want := 95437
+	want := 24933642
 	if got != want {
 		t.Errorf("got %v want %v", got, want)
 	}

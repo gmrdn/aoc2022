@@ -3,6 +3,7 @@ package d
 import (
 	"bufio"
 	"io"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -78,15 +79,23 @@ func (d *D) Run() int {
 		}
 	}
 
-	sumOfUnder100k := 0
+	var allSums []int
 	for _, d := range allDirectories {
 		sumOfDirectory := calcSumOfDirectory(d)
-		if sumOfDirectory < 100000 {
-			sumOfUnder100k += sumOfDirectory
-		}
+		allSums = append(allSums, sumOfDirectory)
 	}
 
-	return sumOfUnder100k
+	sort.Ints(allSums)
+	biggestSum := allSums[len(allSums)-1]
+	availableSpace := 70_000_000 - biggestSum
+	requiredSpace := 30_000_000 - availableSpace
+
+	for i := 0; i < len(allSums); i++ {
+		if allSums[i] >= requiredSpace {
+			return allSums[i]
+		}
+	}
+	return 0
 }
 
 func calcSumOfDirectory(d *directory) int {
