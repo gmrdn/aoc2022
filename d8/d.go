@@ -53,7 +53,7 @@ func (d *D) Run() int {
 		currentRow++
 	}
 
-	visibleTrees := 0
+	maxScenicScore := 0
 	for i := 0; i < len(trees); i++ {
 		for j := 0; j < len(trees[i]); j++ {
 
@@ -74,37 +74,43 @@ func (d *D) Run() int {
 			}
 
 			for left := j - 1; left >= 0; left-- {
-				if trees[i][left].height < trees[i][j].height {
-					trees[i][j].canSeeL++
+				trees[i][j].canSeeL++
+				if trees[i][left].height >= trees[i][j].height {
+					break
 				}
 			}
 
 			for right := j + 1; right < len(trees[i]); right++ {
-				if trees[i][right].height < trees[i][j].height {
-					trees[i][j].canSeeR++
+				trees[i][j].canSeeR++
+				if trees[i][right].height >= trees[i][j].height {
+					break
 				}
 			}
 
 			for up := i - 1; up >= 0; up-- {
-				if trees[up][j].height < trees[i][j].height {
-					trees[i][j].canSeeU++
+				trees[i][j].canSeeU++
+				if trees[up][j].height >= trees[i][j].height {
+					break
 				}
 			}
 
 			for down := i + 1; down < len(trees); down++ {
-				if trees[down][j].height < trees[i][j].height {
-					trees[i][j].canSeeD++
+				trees[i][j].canSeeD++
+				if trees[down][j].height >= trees[i][j].height {
+					break
 				}
 			}
 
-			if trees[i][j].canSeeL == j || trees[i][j].canSeeR == len(trees[i])-j-1 || trees[i][j].canSeeU == i || trees[i][j].canSeeD == len(trees)-i-1 {
-				visibleTrees++
+			scenicScore := trees[i][j].canSeeL * trees[i][j].canSeeR * trees[i][j].canSeeU * trees[i][j].canSeeD
+
+			if scenicScore > maxScenicScore {
+				maxScenicScore = scenicScore
 			}
 
 		}
 	}
 
-	return visibleTrees
+	return maxScenicScore
 }
 
 func (d *D) RunStr() string {
