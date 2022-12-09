@@ -13,6 +13,7 @@ import (
 	d6 "aoc2022/d6"
 	d7 "aoc2022/d7"
 	d8 "aoc2022/d8"
+	d9 "aoc2022/d9"
 	"aoc2022/days"
 )
 
@@ -26,6 +27,7 @@ func main() {
 		d6.NewD(),
 		d7.NewD(),
 		d8.NewD(),
+		d9.NewD(),
 	}
 
 	for index, day := range days {
