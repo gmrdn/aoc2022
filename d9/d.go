@@ -2,6 +2,7 @@ package d
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strconv"
 	"strings"
@@ -55,28 +56,69 @@ func (d *D) Run() int {
 				nodes[0].y++
 				for i := 0; i < 9; i++ {
 					adjustUp(nodes[i], nodes[i+1])
+					adjustDown(nodes[i], nodes[i+1])
+					adjustRight(nodes[i], nodes[i+1])
+					adjustLeft(nodes[i], nodes[i+1])
 				}
 			case "D":
 				nodes[0].y--
 				for i := 0; i < 9; i++ {
+					adjustUp(nodes[i], nodes[i+1])
 					adjustDown(nodes[i], nodes[i+1])
+					adjustRight(nodes[i], nodes[i+1])
+					adjustLeft(nodes[i], nodes[i+1])
 				}
 			case "L":
 				nodes[0].x--
 				for i := 0; i < 9; i++ {
+					adjustUp(nodes[i], nodes[i+1])
+					adjustDown(nodes[i], nodes[i+1])
+					adjustRight(nodes[i], nodes[i+1])
 					adjustLeft(nodes[i], nodes[i+1])
 				}
 			case "R":
 				nodes[0].x++
 				for i := 0; i < 9; i++ {
+					adjustUp(nodes[i], nodes[i+1])
+					adjustDown(nodes[i], nodes[i+1])
 					adjustRight(nodes[i], nodes[i+1])
+					adjustLeft(nodes[i], nodes[i+1])
 				}
 
 			}
 			visited[*nodes[9]] = true
+			// visualizeNodes(nodes)
 		}
 	}
 	return len(visited)
+}
+
+func visualizeNodes(nodes map[int]*node) {
+	grid := make([][]string, 21)
+	for i := 0; i < 21; i++ {
+		grid[i] = make([]string, 26)
+	}
+
+	for i := 0; i < 10; i++ {
+		grid[nodes[i].y+5][nodes[i].x+11] = strconv.Itoa(i)
+	}
+
+	for i := 0; i < 21; i++ {
+		for j := 0; j < 26; j++ {
+			if grid[i][j] == "" {
+				grid[i][j] = "."
+			}
+		}
+	}
+
+	for i := 0; i < 21; i++ {
+		for j := 0; j < 26; j++ {
+			print(grid[i][j])
+		}
+		println()
+	}
+
+	fmt.Println("=====================================")
 }
 
 func adjustUp(h, t *node) {
