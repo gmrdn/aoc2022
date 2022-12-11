@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"io"
 	"strconv"
+	"strings"
 )
 
 type D struct {
@@ -19,14 +20,16 @@ func (d *D) Input(input io.Reader) {
 }
 
 type op struct {
-	opcode  string
-	arg     int
-	Xbefore int
-	Xafter  int
-	cycles  []int
+	arg   int
+	X     int
+	cycle int
 }
 
 func (d *D) Run() int {
+	return 0
+}
+
+func (d *D) RunStr() string {
 	fileScanner := bufio.NewScanner(d.inputStream)
 
 	fileScanner.Split(bufio.ScanLines)
@@ -39,11 +42,9 @@ func (d *D) Run() int {
 		line := fileScanner.Text()
 		if line == "noop" {
 			stackOfOps = append(stackOfOps, op{
-				opcode:  "noop",
-				arg:     0,
-				Xbefore: X,
-				Xafter:  X,
-				cycles:  []int{currentCycle},
+				arg:   0,
+				X:     X,
+				cycle: currentCycle,
 			})
 			currentCycle++
 		}
@@ -53,34 +54,111 @@ func (d *D) Run() int {
 				panic(err)
 			}
 			stackOfOps = append(stackOfOps, op{
-				opcode:  "addx",
-				arg:     arg,
-				Xbefore: X,
-				Xafter:  X + arg,
-				cycles:  []int{currentCycle, currentCycle + 1},
+				arg:   arg,
+				X:     X,
+				cycle: currentCycle,
 			})
 
 			X += arg
-			currentCycle += 2
+			currentCycle++
+
+			stackOfOps = append(stackOfOps, op{
+				arg:   arg,
+				X:     X,
+				cycle: currentCycle,
+			})
+			currentCycle++
 		}
 	}
 
-	sum := 0
+	crtStack := []string{}
+	crtStack = append(crtStack, "#")
 
-	cyclesToCheck := []int{20, 60, 100, 140, 180, 220}
-	for _, op := range stackOfOps {
-		for _, cycle := range cyclesToCheck {
-			for _, opCycle := range op.cycles {
-				if cycle == opCycle {
-					sum += cycle * op.Xbefore
-				}
-			}
+	for i := 1; i < 40; i++ {
+		spriteMiddle := stackOfOps[i-1].X
+		spriteLeft := spriteMiddle - 1
+		spriteRight := spriteMiddle + 1
+
+		if spriteLeft == i || spriteRight == i || spriteMiddle == i {
+			crtStack = append(crtStack, "#")
+		} else {
+			crtStack = append(crtStack, ".")
 		}
 	}
 
-	return sum
-}
+	for i := 40; i < 80; i++ {
+		spriteMiddle := stackOfOps[i-1].X + 40
+		spriteLeft := spriteMiddle - 1
+		spriteRight := spriteMiddle + 1
 
-func (d *D) RunStr() string {
-	return ""
+		if spriteLeft == i || spriteRight == i || spriteMiddle == i {
+			crtStack = append(crtStack, "#")
+		} else {
+			crtStack = append(crtStack, ".")
+		}
+	}
+
+	for i := 80; i < 120; i++ {
+		spriteMiddle := stackOfOps[i-1].X + 80
+		spriteLeft := spriteMiddle - 1
+		spriteRight := spriteMiddle + 1
+
+		if spriteLeft == i || spriteRight == i || spriteMiddle == i {
+			crtStack = append(crtStack, "#")
+		} else {
+			crtStack = append(crtStack, ".")
+		}
+	}
+
+	for i := 120; i < 160; i++ {
+		spriteMiddle := stackOfOps[i-1].X + 120
+		spriteLeft := spriteMiddle - 1
+		spriteRight := spriteMiddle + 1
+
+		if spriteLeft == i || spriteRight == i || spriteMiddle == i {
+			crtStack = append(crtStack, "#")
+		} else {
+			crtStack = append(crtStack, ".")
+		}
+	}
+
+	for i := 160; i < 200; i++ {
+		spriteMiddle := stackOfOps[i-1].X + 160
+		spriteLeft := spriteMiddle - 1
+		spriteRight := spriteMiddle + 1
+
+		if spriteLeft == i || spriteRight == i || spriteMiddle == i {
+			crtStack = append(crtStack, "#")
+		} else {
+			crtStack = append(crtStack, ".")
+		}
+	}
+
+	for i := 200; i < 240; i++ {
+		spriteMiddle := stackOfOps[i-1].X + 200
+		spriteLeft := spriteMiddle - 1
+		spriteRight := spriteMiddle + 1
+
+		if spriteLeft == i || spriteRight == i || spriteMiddle == i {
+			crtStack = append(crtStack, "#")
+		} else {
+			crtStack = append(crtStack, ".")
+		}
+	}
+
+	display := "\n"
+	display += strings.Join(crtStack[0:40], "")
+	display += "\n"
+	display += strings.Join(crtStack[40:80], "")
+	display += "\n"
+	display += strings.Join(crtStack[80:120], "")
+	display += "\n"
+	display += strings.Join(crtStack[120:160], "")
+	display += "\n"
+	display += strings.Join(crtStack[160:200], "")
+	display += "\n"
+	display += strings.Join(crtStack[200:240], "")
+	display += "\n"
+
+	return display
 }
