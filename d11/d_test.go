@@ -38,7 +38,7 @@ Monkey 3:
 	d := NewD()
 	d.Input(bytes.NewBufferString(input))
 	got := d.Run()
-	want := 10605
+	want := 2713310158
 	if got != want {
 		t.Errorf("got %v want %v", got, want)
 	}

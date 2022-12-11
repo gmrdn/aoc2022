@@ -26,7 +26,8 @@ func (d *D) Run() int {
 	}
 
 	g := Game{
-		monkeys: make(map[int]Monkey),
+		monkeys:           make(map[int]Monkey),
+		tranquilizingShot: 1,
 	}
 
 	inputMonkeys := strings.Split(string(allLines), "\n\n")
@@ -42,9 +43,10 @@ func (d *D) Run() int {
 			nbInspections: 0,
 		}
 		g.monkeys[monkeyNumber] = monkey
+		g.tranquilizingShot = g.tranquilizingShot * monkey.test
 	}
 
-	for r := 0; r < 20; r++ {
+	for r := 0; r < 10000; r++ {
 		g.RunRound()
 	}
 
@@ -67,7 +69,8 @@ func (d *D) RunStr() string {
 }
 
 type Game struct {
-	monkeys map[int]Monkey
+	monkeys           map[int]Monkey
+	tranquilizingShot int
 }
 
 func (g *Game) RunRound() {
@@ -75,9 +78,9 @@ func (g *Game) RunRound() {
 		for _, item := range g.monkeys[i].startingItems {
 			worryLevel := item
 			worryLevel = g.monkeys[i].operation(worryLevel)
-			worryLevel = worryLevel / 3
+			worryLevel = worryLevel % g.tranquilizingShot
 			var targetMonkey int
-			if g.monkeys[i].test(worryLevel) {
+			if worryLevel%g.monkeys[i].test == 0 {
 				targetMonkey = g.monkeys[i].ifTrue
 			} else {
 				targetMonkey = g.monkeys[i].ifFalse
@@ -96,7 +99,7 @@ func (g *Game) RunRound() {
 type Monkey struct {
 	startingItems []int
 	operation     func(int) int
-	test          func(int) bool
+	test          int
 	ifTrue        int
 	ifFalse       int
 	nbInspections int
@@ -158,14 +161,12 @@ func parseOperation(s string) func(int) int {
 	return nil
 }
 
-func parseTest(s string) func(int) bool {
+func parseTest(s string) int {
 	divisor, err := strconv.Atoi(s[21:])
 	if err != nil {
 		panic(err)
 	}
-	return func(i int) bool {
-		return i%divisor == 0
-	}
+	return divisor
 }
 
 func parseIfTrue(s string) int {
