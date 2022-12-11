@@ -2,7 +2,6 @@ package d
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"strconv"
 	"strings"
@@ -40,14 +39,27 @@ func (d *D) Run() int {
 			test:          parseTest(lines[3]),
 			ifTrue:        parseIfTrue(lines[4]),
 			ifFalse:       parseIfFalse(lines[5]),
+			nbInspections: 0,
 		}
 		g.monkeys[monkeyNumber] = monkey
-
 	}
 
-	fmt.Println(g.monkeys)
+	for r := 0; r < 20; r++ {
+		g.RunRound()
+	}
 
-	return 0
+	max1 := 0
+	max2 := 0
+	for _, m := range g.monkeys {
+		if m.nbInspections > max1 {
+			max2 = max1
+			max1 = m.nbInspections
+		} else if m.nbInspections > max2 {
+			max2 = m.nbInspections
+		}
+	}
+
+	return max1 * max2
 }
 
 func (d *D) RunStr() string {
@@ -58,12 +70,36 @@ type Game struct {
 	monkeys map[int]Monkey
 }
 
+func (g *Game) RunRound() {
+	for i := 0; i < len(g.monkeys); i++ {
+		for _, item := range g.monkeys[i].startingItems {
+			worryLevel := item
+			worryLevel = g.monkeys[i].operation(worryLevel)
+			worryLevel = worryLevel / 3
+			var targetMonkey int
+			if g.monkeys[i].test(worryLevel) {
+				targetMonkey = g.monkeys[i].ifTrue
+			} else {
+				targetMonkey = g.monkeys[i].ifFalse
+			}
+			receiver := g.monkeys[targetMonkey]
+			receiver.startingItems = append(receiver.startingItems, worryLevel)
+			g.monkeys[targetMonkey] = receiver
+			sender := g.monkeys[i]
+			sender.startingItems = sender.startingItems[1:]
+			sender.nbInspections++
+			g.monkeys[i] = sender
+		}
+	}
+}
+
 type Monkey struct {
 	startingItems []int
 	operation     func(int) int
 	test          func(int) bool
 	ifTrue        int
 	ifFalse       int
+	nbInspections int
 }
 
 func parseMonkeyNumber(s string) int {
