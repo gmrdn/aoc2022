@@ -2,9 +2,8 @@ package d
 
 import (
 	"bufio"
-	"fmt"
 	"io"
-	"strings"
+	"math"
 )
 
 type D struct {
@@ -20,17 +19,25 @@ func (d *D) Input(input io.Reader) {
 }
 
 func (d *D) Run() int {
-	matrix, src, dest := d.ParseInput()
-	pathLength := d.ShortestPath(matrix, src, dest)
+	matrix, startingPositions, dest := d.ParseInput()
 
-	return pathLength
+	minDistance := math.MaxInt32
+
+	for _, startingPosition := range startingPositions {
+		pathLength := d.ShortestPath(matrix, startingPosition, dest, minDistance)
+		if pathLength < minDistance {
+			minDistance = pathLength
+		}
+	}
+
+	return minDistance
 }
 
 func (d *D) RunStr() string {
 	return ""
 }
 
-func (d *D) ParseInput() ([][]byte, position, position) {
+func (d *D) ParseInput() ([][]byte, []position, position) {
 	result := [][]byte{}
 	fileScanner := bufio.NewScanner(d.inputStream)
 
@@ -38,28 +45,35 @@ func (d *D) ParseInput() ([][]byte, position, position) {
 
 	currentRow := 0
 
-	src := position{0, 0}
+	startingPositions := []position{}
 	dest := position{0, 0}
 	for fileScanner.Scan() {
 		line := fileScanner.Text()
 
-		srcIndex := strings.Index(line, "S")
-		if srcIndex > -1 {
-			src = position{srcIndex, currentRow}
-			line = strings.Replace(line, "S", "a", 1)
+		currentLine := []byte{}
+		for i, char := range line {
+
+			if char == 'a' {
+				startingPositions = append(startingPositions, position{i, currentRow})
+			}
+			if char == 'S' {
+				startingPositions = append(startingPositions, position{i, currentRow})
+				char = 'a'
+			}
+			if char == 'E' {
+				dest = position{i, currentRow}
+				char = 'z'
+			}
+
+			currentLine = append(currentLine, byte(char))
 		}
 
-		destIndex := strings.Index(line, "E")
-		if destIndex > -1 {
-			dest = position{destIndex, currentRow}
-			line = strings.Replace(line, "E", "z", 1)
-		}
+		result = append(result, currentLine)
 
-		result = append(result, []byte(line))
 		currentRow++
 	}
 
-	return result, src, dest
+	return result, startingPositions, dest
 }
 
 type position struct {
@@ -73,7 +87,7 @@ type node struct {
 	dist int
 }
 
-func (d *D) ShortestPath(mat [][]byte, src position, dest position) int {
+func (d *D) ShortestPath(mat [][]byte, src position, dest position, currentMinDistance int) int {
 	queue := []node{
 		{
 			x:    src.x,
@@ -85,16 +99,18 @@ func (d *D) ShortestPath(mat [][]byte, src position, dest position) int {
 	visited := make(map[position]bool)
 	visited[src] = true
 
-	minDistance := 0
+	minDistance := math.MaxInt32
 
 	for len(queue) > 0 {
 		current := queue[0]
 		queue = queue[1:]
 
 		currentAltitude := int(mat[current.y][current.x])
-		fmt.Println(currentAltitude)
 
 		dist := current.dist
+		if dist > currentMinDistance {
+			return math.MaxInt32
+		}
 
 		if current.x == dest.x && current.y == dest.y {
 			minDistance = dist

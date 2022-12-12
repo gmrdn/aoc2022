@@ -15,7 +15,7 @@ abdefghi
 	d := NewD()
 	d.Input(bytes.NewBufferString(input))
 	got := d.Run()
-	want := 31
+	want := 29
 	if got != want {
 		t.Errorf("got %v want %v", got, want)
 	}
@@ -31,7 +31,7 @@ abdefghi
 
 	d := NewD()
 	d.Input(bytes.NewBufferString(input))
-	mat, src, dest := d.ParseInput()
+	mat, startingPositions, dest := d.ParseInput()
 	want := [][]byte{
 		{97, 97, 98, 113, 112, 111, 110, 109},
 		{97, 98, 99, 114, 121, 120, 120, 108},
@@ -52,13 +52,22 @@ abdefghi
 		}
 	}
 
-	expectedSrc := position{0, 0}
-	if src != expectedSrc {
-		t.Errorf("got %v want %v", src, position{0, 0})
+	expectedStartingPositions := []position{
+		{0, 0},
+		{1, 0},
+		{0, 1},
+		{0, 2},
+		{0, 3},
+		{0, 4},
+	}
+	for i, pos := range startingPositions {
+		if pos != expectedStartingPositions[i] {
+			t.Errorf("got %v want %v", pos, expectedStartingPositions[i])
+		}
 	}
 
 	expectedDest := position{5, 2}
 	if dest != expectedDest {
-		t.Errorf("got %v want %v", dest, position{7, 2})
+		t.Errorf("got %v want %v", dest, expectedDest)
 	}
 }
