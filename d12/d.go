@@ -2,6 +2,7 @@ package d
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strings"
 )
@@ -51,6 +52,7 @@ func (d *D) ParseInput() ([][]byte, position, position) {
 		destIndex := strings.Index(line, "E")
 		if destIndex > -1 {
 			dest = position{destIndex, currentRow}
+			line = strings.Replace(line, "E", "z", 1)
 		}
 
 		result = append(result, []byte(line))
@@ -90,6 +92,7 @@ func (d *D) ShortestPath(mat [][]byte, src position, dest position) int {
 		queue = queue[1:]
 
 		currentAltitude := int(mat[current.y][current.x])
+		fmt.Println(currentAltitude)
 
 		dist := current.dist
 

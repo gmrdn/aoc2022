@@ -5,23 +5,22 @@ import (
 	"testing"
 )
 
-//	func TestD1(t *testing.T) {
-//		input := `Sabqponm
-//
-// abcryxxl
-// accszExk
-// acctuvwj
-// abdefghi
-// `
-//
-//		d := NewD()
-//		d.Input(bytes.NewBufferString(input))
-//		got := d.Run()
-//		want := 31
-//		if got != want {
-//			t.Errorf("got %v want %v", got, want)
-//		}
-//	}
+func TestD1(t *testing.T) {
+	input := `Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi
+`
+	d := NewD()
+	d.Input(bytes.NewBufferString(input))
+	got := d.Run()
+	want := 31
+	if got != want {
+		t.Errorf("got %v want %v", got, want)
+	}
+}
+
 func TestParsing(t *testing.T) {
 	input := `Sabqponm
 abcryxxl
@@ -36,7 +35,7 @@ abdefghi
 	want := [][]byte{
 		{97, 97, 98, 113, 112, 111, 110, 109},
 		{97, 98, 99, 114, 121, 120, 120, 108},
-		{97, 99, 99, 115, 122, 69, 120, 107},
+		{97, 99, 99, 115, 122, 122, 120, 107},
 		{97, 99, 99, 116, 117, 118, 119, 106},
 		{97, 98, 100, 101, 102, 103, 104, 105},
 	}
@@ -61,39 +60,5 @@ abdefghi
 	expectedDest := position{5, 2}
 	if dest != expectedDest {
 		t.Errorf("got %v want %v", dest, position{7, 2})
-	}
-}
-
-func TestShortestPath(t *testing.T) {
-	matrix := [][]byte{
-		{97, 97, 98},
-		{97, 98, 99},
-		{95, 69, 100},
-	}
-
-	d := NewD()
-
-	got := d.ShortestPath(matrix, position{0, 0}, position{1, 2})
-	want := 3
-
-	if got != want {
-		t.Errorf("got %v want %v", got, want)
-	}
-}
-
-func TestOnlyAscending(t *testing.T) {
-	matrix := [][]byte{
-		{97, 97, 98},
-		{97, 100, 99},
-		{99, 69, 100},
-	}
-
-	d := NewD()
-
-	got := d.ShortestPath(matrix, position{0, 0}, position{1, 2})
-	want := 5
-
-	if got != want {
-		t.Errorf("got %v want %v", got, want)
 	}
 }
